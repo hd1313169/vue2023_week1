@@ -49,56 +49,66 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td width="150">{{ }}</td>
+                            <!-- v-for 遍歷產品資料陣列 -->
+                            <tr v-for="(item) in products" v-bind:key="item.id">
+                                <!-- {{}} 帶入對應的屬性 -->
+                                <td width="150">{{ item.title }}</td>
                                 <td width="120">
-                                    {{ }}
+                                    {{ item.origin_price }}
                                 </td>
                                 <td width="120">
-                                    {{ }}
+                                    {{ item.price }}
                                 </td>
+                                <!-- v-if v-else 帶入條件判斷是否啟用 -->
                                 <td width="150">
-                                    <span class="text-success">啟用</span>
-                                    <span>未啟用</span>
+                                    <span v-if="item.is_enabled" class="text-success">啟用</span>
+                                    <span v-else>未啟用</span>
                                 </td>
+                                <!-- v-on:click 觸發對應產品存入暫存的空物件 -->
                                 <td width="120">
-                                    <button type="button" class="btn btn-primary">查看細節</button>
+                                    <button type="button" class="btn btn-primary" v-on:click="tempt = item">查看細節</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <p>目前有 <span>{{ }}</span> 項產品</p>
+                    <!-- 用陣列長度判斷品項數量 -->
+                    <p>目前有 <span>{{ products.length }}</span> 項產品</p>
                 </div>
                 <div class="col-md-6">
                     <h2>單一產品細節</h2>
-                    <template>
+                    <!-- v-if 判斷如果標題存在就帶出暫存物件中的資料 -->
+                    <div v-if="tempt.title">
                         <div class="card mb-3">
-                            <img src="" class="card-img-top primary-image" alt="主圖">
+                            <!-- v-bind 新增 src 屬性新增圖片 -->
+                            <img v-bind:src="tempt.imageUrl" class="card-img-top primary-image" alt="主圖">
+                            <!-- {{}} 帶入對應屬性的資料 -->
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    {{ }}
-                                    <span class="badge bg-primary ms-2">{{ }}</span>
+                                    {{ tempt.title }}
+                                    <span class="badge bg-primary ms-2">{{ tempt.category }}</span>
                                 </h5>
-                                <p class="card-text">商品描述：{{ }}</p>
-                                <p class="card-text">商品內容：{{ }}</p>
+                                <p class="card-text">商品描述：{{ tempt.description }}</p>
+                                <p class="card-text">商品內容：{{ tempt.content }}</p>
                                 <div class="d-flex">
-                                    <p class="card-text me-2">{{ }}</p>
-                                    <p class="card-text text-secondary"><del>{{ }}</del></p>
-                                    元 / {{ }}
+                                    <p class="card-text me-2">{{ tempt.price }}</p>
+                                    <p class="card-text text-secondary"><del>{{ tempt.origin_price }}</del></p>
+                                    元 / {{ tempt.unit }}
                                 </div>
                             </div>
                         </div>
-                        <template>
-                            <img src="" alt="" class="images m-2">
-                        </template>
-                    </template>
-                    <p class="text-secondary">請選擇一個商品查看</p>
+                        <!-- v-for 遍歷小圖資料 -->
+                        <span v-for="(item, index) in tempt.imagesUrl" v-bind:key="index">
+                            <img v-if="item" v-bind:src="item" alt="img" class="images m-2">
+                        </span>
+                    </div>
+                    <!-- v-else 如果沒有帶出資料代表沒有選擇單一產品 -->
+                    <p v-else class="text-secondary">請選擇一個商品查看</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="./practice04.js" type="module"></script>
+    <script src="index.js" type="module"></script>
 
 </body>
 
